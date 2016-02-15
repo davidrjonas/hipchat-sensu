@@ -14,7 +14,31 @@
     (verify jwt secret) (:claims jwt)))
 )
 
-(defn events->glance-data [events])
+(def ^:private status->kw {0 :ok 1 :warn 2 :crit})
+
+(defn- label-value [statuses]
+  (let [warn-str (if (:warn statuses) (str "<b>" (:warn statuses) "</b>W ") "")
+        crit-str (if (:crit statuses) (str "<b>" (:crit statuses) "</b>C ") "")]
+    (str warn-str crit-str)))
+
+(defn- lozenge-value [statuses]
+  (cond-
+    (:crit statuses) {:type "error" :label "ERROR"}
+    (:warn statuses) {:type "current" :label "WARN"}
+    :else {:type "success" :label "OK"}
+
+(defn- status-freqs [events]
+  (frequencies (map #(get status->kw (get-in % [:check :status])) events)))
+
+(defn events->glance-data
+  "Only one glance is handled"
+  [events]
+  (let [statuses (status-freqs events)]
+    {:label {:type "html"
+             :value (label-value statuses)}
+     :status {:type "lozenge"
+              :value (lozenge-value statuses)}
+     }))
 
 (defn wrap-sensu-glance [content]
   {:glance [{:key "sensu-glance"
@@ -24,7 +48,7 @@
   (let [installation (inst/lookup id)
         url (str (:apiUrl installation) "addon/ui/room/" (:roomId installation))
         token (tok/lookup id)
-        data (wrap-sensu-glance (events->glance-data events))]
+        data (-> events events->glance-data wrap-sensu-glance)]
     (log/info "received events for " id ", " events)
     @(http/post-json url data token)))
 
