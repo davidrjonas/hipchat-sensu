@@ -1,6 +1,5 @@
 (ns hipchat-sensu.sensu
-  (:require [org.httpkit.client :as http]
-            [clojure.data.json :as json]
+  (:require [hipchat-sensu.http :as http]
             [org.httpkit.timer :as timer]))
 
 (def ^:private watchers (atom 0))
@@ -11,19 +10,8 @@
 
 (defn- poll-interval-ms [] (* 1000 (:poll-seconds @config)))
 
-(defn- response->json-params [response]
-  (if (>= (:status response) 400)
-    {:error "failed to GET url"}
-    (try
-      (-> response :body (json/read-str :key-fn keyword))
-      (catch java.io.EOFException e {:error "invalid json"}))))
-
-(defn- fetch-json [url]
-  (let [resp @(http/get url)]
-    (assoc resp :params (response->json-params resp))))
-
 (defn- poll-sensu []
-  (reset! state (fetch-json (str (:url @config) "/events"))))
+  (reset! state (http/get-json (str (:url @config) "/events"))))
 
 (defn set-config [new-config]
   (reset! config new-config))
@@ -52,4 +40,5 @@
                                                                                 (= 0 newv))
                                                                          (timer/cancel task)
                                                                          (remove-watch :poller-off))))))))
+
 
