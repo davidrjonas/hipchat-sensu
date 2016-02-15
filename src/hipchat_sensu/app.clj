@@ -34,7 +34,7 @@
   (POST "/uninstalled"
         req (handler/uninstalled (:params req)))
 
-  (POST "/glance-data"
+  (POST "/glance/:glance/data"
         req (wrap-json-response handler/glance-data))
 
   (route/not-found "Not Found"))
