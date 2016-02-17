@@ -50,9 +50,10 @@
     (redirect redirectUrl)))
 
 (defn glance-data [request]
-  (comment validate-jwt)
-  (-> (sensu/current)
-      hipchat/events->glance-data
-      response
-      add-cors-header))
+  ; FIXME: debug only.
+  (if-not (= 1 (-> request :params :novalidate))
+    (hipchat/validate-jwt request))
+  ;[{:id 1 :client {:name "test"} :check {:name "check1" :status 1}}]
+  (let [current (sensu/current)]
+    (-> hipchat/events->glance-data response add-cors-header)))
 
