@@ -22,30 +22,31 @@
       (log/debug request)
       response)))
 
-(defroutes public-routes
-  (GET "/" [] "HipChat Sensu Addon")
-  (GET "/info" request (str request))
-
-  (GET "/capabilities.json"
-       req (wrap-json-response
-             (fn [req] (response (handler/capabilities baseurl)))))
-
-  (POST "/installed"
-        req (handler/installed (:params req)))
-
-  (POST "/uninstalled"
-        req (handler/uninstalled (:params req)))
-
-  (route/not-found "Not Found"))
-
 (defroutes jwt-routes
   (POST ["/glance/:glance/data", :glance #"[0-9]+"]
         req (wrap-json-response handler/glance-data)))
 
+(def all-routes
+  (routes
+    (GET "/" [] "HipChat Sensu Addon")
+    (GET "/info" request (str request))
+
+    (GET "/capabilities.json"
+         req (wrap-json-response
+               (fn [req] (response (handler/capabilities baseurl)))))
+
+    (POST "/installed"
+          req (handler/installed (:params req)))
+
+    (POST "/uninstalled"
+          req (handler/uninstalled (:params req)))
+
+    (wrap-routes jwt-routes wrap-jwt-auth)
+
+    (route/not-found "Not Found")))
+
 (def app
-  (-> (routes
-        (-> jwt-routes (wrap-routes wrap-jwt-auth))
-        public-routes)
+  (-> all-routes
       (wrap-defaults api-defaults)
       wrap-logger
       wrap-json-params))
