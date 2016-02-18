@@ -52,5 +52,8 @@
 (defn glance-data [request]
   ;(let [current [{:id 1 :client {:name "test"} :check {:name "check1" :status 1}}]]
   (let [current (sensu/current)]
-    (-> hipchat/events->glance-data response add-cors-header)))
+    (-> current
+        hipchat/events->glance-data
+        response
+        add-cors-header)))
 
