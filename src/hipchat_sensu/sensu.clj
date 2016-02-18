@@ -31,14 +31,14 @@
       current
       (poll-sensu))))
 
-(add-watch watchers :poller-on (fn [k r oldv newv]
+(add-watch watchers :poller-on (fn [_ _ oldv newv]
                                  (if (and (= 0 oldv)
                                           (= 1 newv))
                                    (let [task (timer/schedule-task (poll-interval-ms) poll-sensu)]
-                                     (add-watch watchers :poller-off (fn [k r oldv newv]
+                                     (add-watch watchers :poller-off (fn [_ _ oldv newv]
                                                                        (if (and (= 1 oldv)
                                                                                 (= 0 newv))
                                                                          (timer/cancel task)
-                                                                         (remove-watch :poller-off))))))))
+                                                                         (remove-watch watchers :poller-off))))))))
 
 
