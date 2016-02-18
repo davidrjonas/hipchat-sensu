@@ -9,6 +9,13 @@ bound to be messy.
 [Sensu]: https://sensuapp.org/
 [HipChat]: http://hipchat.com/
 
+## TODO
+
+- Persistent storage of installations (try enduro?)
+- Glance click action
+- Sidebar view
+- Tests!
+
 ## Dev Prerequisites
 
 You will need [Leiningen][] 2.0.0 or above installed.
