@@ -1,8 +1,15 @@
-# hipchat-sensu
+# HipChat / Sensu Addon
 
-FIXME
+This project aims to provide integration of [Sensu] monitoring with [HipChat] chat client.
 
-## Prerequisites
+At this point it isn't even alpha and hasn't been tested against the atlassian
+servers. It also has no tests. And this is my first clojure project so it is
+bound to be messy.
+
+[Sensu]: https://sensuapp.org/
+[HipChat]: http://hipchat.com/
+
+## Dev Prerequisites
 
 You will need [Leiningen][] 2.0.0 or above installed.
 
@@ -16,4 +23,4 @@ To start a web server for the application, run:
 
 ## License
 
-Copyright © 2016 FIXME
+Copyright © 2016 Apache License 2.0
