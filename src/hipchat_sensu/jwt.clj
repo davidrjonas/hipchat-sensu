@@ -29,7 +29,7 @@
   ([realm]
    {:status 401
     :headers {"WWW-Authenticate" (str "Bearer realm=\"" realm "\"")
-              "Content-type" "text/plain"}
+              "Content-type" "text/plain; charset=utf-8"}
     :body "401 Unauthorized"}))
 
 (defn wrap-jwt-auth [handler]
