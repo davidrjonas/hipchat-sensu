@@ -30,4 +30,6 @@ To start a web server for the application, run:
 
 ## License
 
-Copyright © 2016 Apache License 2.0
+Copyright © 2016 David Jonas
+
+Distributed under the Apache License 2.0
