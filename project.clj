@@ -6,6 +6,7 @@
                  [compojure "1.4.0"]
                  [ring/ring-defaults "0.1.5"]
                  [ring/ring-json "0.4.0"]
+                 [ring-logger-timbre "0.7.5"]
                  [com.taoensso/timbre "4.2.1"]
                  [org.clojure/data.json "0.2.6"]
                  [http-kit "2.1.18"]

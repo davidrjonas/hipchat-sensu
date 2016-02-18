@@ -1,6 +1,7 @@
 (ns hipchat-sensu.app
   (:require [compojure.core :refer :all]
             [compojure.route :as route]
+            [ring.logger.timbre :as ring.logger]
             [taoensso.timbre :as log]
             [hipchat-sensu.handler :as handler]
             [hipchat-sensu.jwt :refer [wrap-jwt-auth]]
@@ -10,17 +11,6 @@
 
 ; Use env to set vars
 (def baseurl "http://localhost")
-
-(def method->str {:head "HEAD" :get "GET" :post "POST" :put "PUT" :patch "PATCH"})
-
-(defn wrap-logger [handler]
-  (fn [request]
-    (let [response (handler request)]
-      (log/info (:remote-addr request)
-                (str "\"" (-> request :request-method method->str) " " (:uri request) "\"")
-                (:status response))
-      (log/debug request)
-      response)))
 
 (defroutes jwt-routes
   (POST ["/glance/:glance/data", :glance #"[0-9]+"]
@@ -48,5 +38,5 @@
 (def app
   (-> all-routes
       (wrap-defaults api-defaults)
-      wrap-logger
+      ring.logger/wrap-with-logger
       wrap-json-params))
