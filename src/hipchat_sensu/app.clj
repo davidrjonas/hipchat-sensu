@@ -2,7 +2,6 @@
   (:require [compojure.core :refer :all]
             [compojure.route :as route]
             [ring.logger.timbre :as ring.logger]
-            [taoensso.timbre :as log]
             [hipchat-sensu.handler :as handler]
             [hipchat-sensu.jwt :refer [wrap-jwt-auth]]
             [ring.util.response :refer [response]]
