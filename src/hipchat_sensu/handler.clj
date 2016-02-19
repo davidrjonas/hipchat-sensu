@@ -17,8 +17,8 @@
   {:name "Sensu HipChat AddOn"
    :description "Sensu glances and side-view"
    :key ""
-   :vendor {:name "No-IP" :url "http://www.noip.com"}
-   :links {:homepage "http://gitlab.lax/djonas/hipchat-sensu-addon"
+   :vendor {:name "davidrjonas" :url "https://github.com/davidrjonas"}
+   :links {:homepage "https://github.com/davidrjonas/hipchat-sensu"
            :self (str baseurl "/capabilities.json")}
    :capabilities {:hipchatApiConsumer {:scopes ["send_notification"]}
                   :installable {:allowGlobal true
